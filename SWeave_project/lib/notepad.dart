@@ -86,7 +86,9 @@ class SecondPage extends StatelessWidget {
               ),
             ],
           ),
-          const TextField(),
+          TextField(
+            controller: myController,
+          ),
         ],
       ),
     );
