@@ -12,20 +12,20 @@ class Notepad extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: "Notepad",
-      home: TextField(),
+      home: Note(),
       debugShowCheckedModeBanner: false,
     );
   }
 }
 
-class TextField extends StatefulWidget {
-  const TextField({Key? key}) : super(key: key);
+class Note extends StatefulWidget {
+  const Note({Key? key}) : super(key: key);
 
   @override
-  State<TextField> createState() => _TextFieldState();
+  State<Note> createState() => _NoteState();
 }
 
-class _TextFieldState extends State<TextField> {
+class _NoteState extends State<Note> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,7 +57,7 @@ class _TextFieldState extends State<TextField> {
 }
 
 class SecondPage extends StatelessWidget {
-  const SecondPage({Key? key}) : super(key: key);
+  final myController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -73,7 +73,11 @@ class SecondPage extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               OutlinedButton(
-                onPressed: () {},
+                onPressed: () => showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(content: Text(myController.text));
+                    }),
                 child: Text("저장하기"),
               ),
               OutlinedButton(
@@ -82,12 +86,7 @@ class SecondPage extends StatelessWidget {
               ),
             ],
           ),
-          const TextField(
-  obscureText: true,
-  decoration: InputDecoration(
-    border: OutlineInputBorder(),
-    labelText: 'Password',
-  ),
+          const TextField(),
         ],
       ),
     );
