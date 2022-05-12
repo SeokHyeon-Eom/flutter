@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
+import 'dart:io';
 
 void main() {
   runApp(Notepad());
@@ -56,9 +57,14 @@ class _NoteState extends State<Note> {
   }
 }
 
-class SecondPage extends StatelessWidget {
-  final myController = TextEditingController();
+var myController = TextEditingController();
+var saveName = TextEditingController();
+save() async {
+  // Write file
+  await File('${myController.text}.txt').writeAsString(saveName.text);
+}
 
+class SecondPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,11 +84,35 @@ class SecondPage extends StatelessWidget {
                     builder: (context) {
                       return AlertDialog(content: Text(myController.text));
                     }),
-                child: Text("저장하기"),
+                child: Text("확인하기"),
               ),
               OutlinedButton(
-                onPressed: () {},
-                child: Text("다른 이름으로 저장하기"),
+                onPressed: () => showDialog(
+                  context: context,
+                  builder: (context) {
+                    return AlertDialog(
+                      title: Text("저장하기"),
+                      content: Column(
+                        children: [
+                          TextField(
+                            controller: saveName,
+                          ),
+                        ],
+                      ),
+                      actions: <Widget>[
+                        OutlinedButton(
+                          child: Text("저장"),
+                          onPressed: () {
+                            //myController = saveName;
+                            save();
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                child: Text("저장하기"),
               ),
             ],
           ),
