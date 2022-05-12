@@ -27,6 +27,11 @@ class Note extends StatefulWidget {
 }
 
 class _NoteState extends State<Note> {
+  readText() async {
+    String dic = await File('./lib/text_folder/flutter.txt').readAsString();
+    print(dic);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,6 +50,7 @@ class _NoteState extends State<Note> {
               icon: Icon(Icons.add),
               label: Text("새로 만들기"),
               onPressed: () {
+                readText();
                 Navigator.push(
                   context,
                   MaterialPageRoute(
