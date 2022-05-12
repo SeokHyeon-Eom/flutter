@@ -36,20 +36,23 @@ class _NoteState extends State<Note> {
         elevation: 0.0,
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          TextButton.icon(
-            style: TextButton.styleFrom(
-                padding: EdgeInsets.fromLTRB(10, 10, 300, 10)),
-            icon: Icon(Icons.add),
-            label: Text("새로 만들기"),
-            onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => SecondPage(),
-                ),
-              );
-            },
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: TextButton.icon(
+              icon: Icon(Icons.add),
+              label: Text("새로 만들기"),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => SecondPage(),
+                  ),
+                );
+              },
+            ),
           ),
         ],
       ),
@@ -57,14 +60,15 @@ class _NoteState extends State<Note> {
   }
 }
 
-var myController = TextEditingController();
-var saveName = TextEditingController();
-save() async {
-  // Write file
-  await File('${myController.text}.txt').writeAsString(saveName.text);
-}
-
 class SecondPage extends StatelessWidget {
+  var myController = TextEditingController();
+  var saveName = TextEditingController();
+
+  save() async {
+    await File('./lib/text_folder/${saveName.text}.txt')
+        .writeAsString(myController.text);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -80,33 +84,44 @@ class SecondPage extends StatelessWidget {
             children: [
               OutlinedButton(
                 onPressed: () => showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(content: Text(myController.text));
-                    }),
-                child: Text("확인하기"),
-              ),
-              OutlinedButton(
-                onPressed: () => showDialog(
                   context: context,
                   builder: (context) {
                     return AlertDialog(
                       title: Text("저장하기"),
-                      content: Column(
-                        children: [
-                          TextField(
-                            controller: saveName,
-                          ),
-                        ],
+                      content: SizedBox(
+                        height: 50,
+                        child: Column(
+                          children: [
+                            TextField(
+                              controller: saveName,
+                            ),
+                          ],
+                        ),
                       ),
                       actions: <Widget>[
-                        OutlinedButton(
-                          child: Text("저장"),
-                          onPressed: () {
-                            //myController = saveName;
-                            save();
-                            Navigator.pop(context);
-                          },
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            Text('제목을 입력해주세요'),
+                            ElevatedButton(
+                              child: Text("저장"),
+                              onPressed: () {
+                                if (saveName.text != "") {
+                                  save();
+                                  Navigator.pop(context);
+                                }
+                              },
+                            ),
+                            SizedBox(
+                              width: 5,
+                            ),
+                            ElevatedButton(
+                              child: Text("취소"),
+                              onPressed: () {
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ],
                         ),
                       ],
                     );
