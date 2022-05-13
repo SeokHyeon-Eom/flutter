@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 import 'package:flutter/material.dart';
 import 'text_input_page.dart';
-import 'dart:io';
 
 class Note extends StatefulWidget {
   const Note({Key? key}) : super(key: key);
