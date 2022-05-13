@@ -2,71 +2,14 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 
-void main() {
-  runApp(Notepad());
-}
-
-class Notepad extends StatelessWidget {
-  const Notepad({Key? key}) : super(key: key);
+class TextInput extends StatefulWidget {
+  const TextInput({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: "Notepad",
-      home: Note(),
-      debugShowCheckedModeBanner: false,
-    );
-  }
+  State<TextInput> createState() => _TextInputState();
 }
 
-class Note extends StatefulWidget {
-  const Note({Key? key}) : super(key: key);
-
-  @override
-  State<Note> createState() => _NoteState();
-}
-
-class _NoteState extends State<Note> {
-  readText() async {
-    String dic = await File('./lib/text_folder/flutter.txt').readAsString();
-    print(dic);
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: Text("메모장"),
-        elevation: 0.0,
-      ),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          SizedBox(
-            width: double.infinity,
-            height: 50,
-            child: TextButton.icon(
-              icon: Icon(Icons.add),
-              label: Text("새로 만들기"),
-              onPressed: () {
-                readText();
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => SecondPage(),
-                  ),
-                );
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class SecondPage extends StatelessWidget {
+class _TextInputState extends State<TextInput> {
   var myController = TextEditingController();
   var saveName = TextEditingController();
 
@@ -108,7 +51,10 @@ class SecondPage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            Text('제목을 입력해주세요'),
+                            const Text('제목을 입력해주세요'),
+                            SizedBox(
+                              width: 5,
+                            ),
                             ElevatedButton(
                               child: Text("저장"),
                               onPressed: () {
